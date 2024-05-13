@@ -7,10 +7,12 @@ class School_Scheduler : public QMainWindow
 {
     Q_OBJECT
 
-public:
-    School_Scheduler(QWidget *parent = nullptr);
-    ~School_Scheduler();
+    public:
+        School_Scheduler(QWidget *parent = nullptr);
+        ~School_Scheduler();
 
-private:
-    Ui::School_SchedulerClass ui;
+    private:
+        Ui::School_SchedulerClass ui;
+        private slots:
+        void import_data();
 };

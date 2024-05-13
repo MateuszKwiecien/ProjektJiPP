@@ -78,5 +78,25 @@
  <resources>
   <include location="School_Scheduler.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>School_SchedulerClass</receiver>
+   <slot>import_data()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>132</x>
+     <y>80</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>262</x>
+     <y>86</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>import_data()</slot>
+ </slots>
 </ui>
