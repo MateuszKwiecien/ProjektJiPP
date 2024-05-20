@@ -95,12 +95,16 @@
     <QtRcc Include="School_Scheduler.qrc" />
     <QtUic Include="School_Scheduler.ui" />
     <QtMoc Include="School_Scheduler.h" />
+    <ClCompile Include="importFile.cpp" />
     <ClCompile Include="inputdialog.cpp" />
     <ClCompile Include="School_Scheduler.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="inputdialog.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="importFile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
