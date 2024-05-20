@@ -14,7 +14,7 @@
    <string>School_Scheduler</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="import_button">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -27,7 +27,7 @@
      <string>Import Data</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="look_buton">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -40,7 +40,7 @@
      <string>Look at imported Data</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="make_schedule_button">
     <property name="geometry">
      <rect>
       <x>440</x>
@@ -80,7 +80,7 @@
  </resources>
  <connections>
   <connection>
-   <sender>pushButton</sender>
+   <sender>import_button</sender>
    <signal>clicked()</signal>
    <receiver>School_SchedulerClass</receiver>
    <slot>import_data()</slot>
@@ -95,8 +95,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>look_buton</sender>
+   <signal>clicked()</signal>
+   <receiver>School_SchedulerClass</receiver>
+   <slot>show_import()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>117</x>
+     <y>136</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>259</x>
+     <y>145</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>import_data()</slot>
+  <slot>show_import()</slot>
  </slots>
 </ui>

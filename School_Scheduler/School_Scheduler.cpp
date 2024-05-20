@@ -33,6 +33,10 @@ void School_Scheduler::import_data() {
 }
 
 
+void School_Scheduler::show_import() {
+
+}
+
 QString get_open_file_name(QWidget* parent, const char* title, const char* format) {
     return QFileDialog::getOpenFileName(parent,                                                 // Parent.
                                         School_Scheduler::tr(title),                            // Title of the dialog.
