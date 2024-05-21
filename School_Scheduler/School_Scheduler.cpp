@@ -6,6 +6,9 @@
 #include <QFileDialog.h>
 #include <QLabel>
 #include <QListWidget>
+#include <QPushButton.h>
+#include <QGridLayout>
+#include <QTableWidget>
 #include <iostream>
 
 using namespace std;
@@ -45,10 +48,8 @@ void School_Scheduler::show_import() {
     lookAtDataDialog->setWindowModality(Qt::WindowModality::ApplicationModal);
 
     // Set fixed dimensions for the dialog.
-    lookAtDataDialog->setMinimumHeight(400);
-    lookAtDataDialog->setMinimumWidth(500);
-    lookAtDataDialog->setMaximumHeight(400);
-    lookAtDataDialog->setMaximumWidth(500);
+    lookAtDataDialog->setFixedHeight(400);
+    lookAtDataDialog->setFixedWidth(500);
 
     // Create a new QLabel instance for the title.
     QLabel* titleLabel = new QLabel();
@@ -81,4 +82,46 @@ void School_Scheduler::show_import() {
 
     lookAtDataDialog->show();
 
+}
+
+void School_Scheduler::make_schedule() {
+    // Create a new QDialog for the scheduling interface.
+    QDialog* scheduleDialog = new QDialog();
+
+    scheduleDialog->setMinimumWidth(640);
+    scheduleDialog->setMinimumHeight(480);
+
+    // Create a QGridLayout to manage the layout of widgets within the dialog.
+    QGridLayout* layout = new QGridLayout(scheduleDialog);
+
+    // Create and configure a QLabel for the title of the dialog.
+    QLabel* titleLabel = new QLabel("This is the school scheduler.", scheduleDialog);
+    titleLabel->setStyleSheet("QLabel { font-size : 16px; }");
+    titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->show();
+    
+    // Create and configure a QPushButton to add elements to the schedule.
+    QPushButton* addElementButton = new QPushButton("Add Element.", scheduleDialog);
+    addElementButton->show();
+    
+    // Create and configure a QPushButton to save the schedule to a file.
+    QPushButton* saveButton = new QPushButton("Save to file.", scheduleDialog);
+    saveButton->show();
+    
+    // Create a QTableWidget to display the schedule. It has 12 rows and 5 columns.
+    QTableWidget* scheduleTable = new QTableWidget(12, 5, scheduleDialog);
+    scheduleTable->show();
+
+    // Add widgets to the layout at the specified positions.
+    layout->addWidget(addElementButton, 0, 0);
+    layout->addWidget(titleLabel, 0, 1);
+    layout->addWidget(saveButton, 0, 2);
+    layout->addWidget(scheduleTable, 1, 0, 1, 3);
+
+    // Set spacing between the widgets in the layout.
+    layout->setHorizontalSpacing(12);
+    layout->setVerticalSpacing(8);
+
+    // Display the dialog.
+    scheduleDialog->show();
 }
