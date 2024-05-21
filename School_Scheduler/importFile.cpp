@@ -1,9 +1,11 @@
 #include "importFile.h"
 #include "School_Scheduler.h"
+#include "inputContainer.h"
 #include <QInputDialog>
 #include <QFileDialog.h>
 #include <iostream>
 
+InputContainer inputContainerFile;
 
 QString get_open_file_name(QWidget* parent, const char* title, const char* format) {
     return QFileDialog::getOpenFileName(parent,                                                 // Parent.
@@ -34,6 +36,7 @@ void processFile(const QString& fileName, int numberOfItems) {
     QTextStream input(&file);
     for (int i = 0; i < numberOfItems && !input.atEnd(); i++) {
         QString line = input.readLine();
+        inputContainerFile.push(line);
         qDebug() << i << " " << line;
     }
     file.close();

@@ -1,5 +1,6 @@
 #include "School_Scheduler.h"
 #include "importFile.h"
+#include "inputContainer.h"
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QFileDialog.h>
@@ -8,6 +9,8 @@
 #include <iostream>
 
 using namespace std;
+
+InputContainer inputContainer;
 
 School_Scheduler::School_Scheduler(QWidget *parent) : QMainWindow(parent) {
     ui.setupUi(this);
@@ -20,6 +23,8 @@ School_Scheduler::~School_Scheduler() {
 
 // Get the needed data to import user data from file.
 void School_Scheduler::import_data() {
+    // Clean the saved data
+    inputContainer.clean_container();
 
     // Open File Dialog.
     QString fileName = get_open_file_name(this);
@@ -55,7 +60,7 @@ void School_Scheduler::show_import() {
     // 400px width
     // 20px height
     titleLabel->setGeometry(50, 25, 400, 20);              
-    titleLabel->setStyleSheet("QLabel { background-color : red; }");
+    titleLabel->setStyleSheet("QLabel { font-size : 16px; }");
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setParent(lookAtDataDialog);
     titleLabel->show();                         
@@ -66,9 +71,10 @@ void School_Scheduler::show_import() {
     dataListWidget->setGeometry(50, 70, 400, 300);
     dataListWidget->setParent(lookAtDataDialog);
 
-    // Dummy data.
-    for (int i = 0; i < 100; i++) {
-        dataListWidget->addItem(QString::number(i));
+    inputContainer.update();
+    for (int i = 0; i < inputContainer.get_size(); i++) {
+        qDebug() << inputContainer.get_at_index(i);
+        dataListWidget->addItem(inputContainer.get_at_index(i));
     }
 
     dataListWidget->show();
