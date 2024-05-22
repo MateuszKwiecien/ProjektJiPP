@@ -108,8 +108,17 @@ void School_Scheduler::make_schedule() {
     QPushButton* saveButton = new QPushButton("Save to file.", scheduleDialog);
     saveButton->show();
     
+    QStringList horizontalHeaderLabels;
+    horizontalHeaderLabels << "Monday" << "Tuesday" << "Wednesday" << "Thursday" << "Friday";
+    
+    QStringList verticalHeaderLabels;
+    verticalHeaderLabels << "07 : 00" << "08 : 00" << "09 : 00" << "10 : 00" << "11 : 00" << "12 : 00" << "13 : 00" << "14 : 00" << "15 : 00" << "16 : 00" << "17 : 00" << "18 : 00" << "19 : 00";
+
     // Create a QTableWidget to display the schedule. It has 12 rows and 5 columns.
     QTableWidget* scheduleTable = new QTableWidget(12, 5, scheduleDialog);
+    scheduleTable->setHorizontalHeaderLabels(horizontalHeaderLabels);
+    scheduleTable->setVerticalHeaderLabels(verticalHeaderLabels);
+    
     scheduleTable->show();
 
     // Add widgets to the layout at the specified positions.
