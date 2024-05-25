@@ -134,3 +134,15 @@ void School_Scheduler::make_schedule() {
     // Display the dialog.
     scheduleDialog->show();
 }
+
+void School_Scheduler::add_element() {
+    // Create a new QDialog for adding an element
+    QDialog* addElementDialog = new QDialog();
+    
+    // Set fixed dimensions for the dialog window
+    addElementDialog->setMinimumWidth(640);
+    addElementDialog->setMinimumHeight(480);
+    
+    // Display new element window
+    addElementDialog->show();
+}

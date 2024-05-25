@@ -17,4 +17,5 @@ class School_Scheduler : public QMainWindow
         void import_data();
         void show_import();
         void make_schedule();
+        void add_element();
 };
