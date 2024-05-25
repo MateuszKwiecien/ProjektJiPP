@@ -15,4 +15,5 @@ class School_Scheduler : public QMainWindow
         Ui::School_SchedulerClass ui;
         private slots:
         void import_data();
+        void show_import();
 };

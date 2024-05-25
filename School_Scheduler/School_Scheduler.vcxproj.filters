@@ -43,10 +43,24 @@
     <ClCompile Include="inputdialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="importFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="inputContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="inputdialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="importFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inputContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
