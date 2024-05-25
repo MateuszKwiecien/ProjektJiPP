@@ -16,4 +16,5 @@ class School_Scheduler : public QMainWindow
         private slots:
         void import_data();
         void show_import();
+        void make_schedule();
 };

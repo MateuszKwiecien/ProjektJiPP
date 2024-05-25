@@ -111,9 +111,26 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>make_schedule_button</sender>
+   <signal>clicked()</signal>
+   <receiver>School_SchedulerClass</receiver>
+   <slot>make_schedule()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>489</x>
+     <y>71</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>383</x>
+     <y>83</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>import_data()</slot>
   <slot>show_import()</slot>
+  <slot>make_schedule()</slot>
  </slots>
 </ui>
