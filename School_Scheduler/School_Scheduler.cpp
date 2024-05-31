@@ -9,6 +9,7 @@
 #include <QPushButton.h>
 #include <QGridLayout>
 #include <QTableWidget>
+#include <QComboBox>
 #include <iostream>
 
 using namespace std;
@@ -102,6 +103,7 @@ void School_Scheduler::make_schedule() {
     
     // Create and configure a QPushButton to add elements to the schedule.
     QPushButton* addElementButton = new QPushButton("Add Element.", scheduleDialog);
+    connect(addElementButton, SIGNAL(clicked()), this, SLOT(add_element()));
     addElementButton->show();
     
     // Create and configure a QPushButton to save the schedule to a file.
@@ -112,7 +114,9 @@ void School_Scheduler::make_schedule() {
     horizontalHeaderLabels << "Monday" << "Tuesday" << "Wednesday" << "Thursday" << "Friday";
     
     QStringList verticalHeaderLabels;
-    verticalHeaderLabels << "07 : 00" << "08 : 00" << "09 : 00" << "10 : 00" << "11 : 00" << "12 : 00" << "13 : 00" << "14 : 00" << "15 : 00" << "16 : 00" << "17 : 00" << "18 : 00" << "19 : 00";
+    verticalHeaderLabels << "07 : 30" << "07 : 45" << "08 : 00" << "08 : 15" << "08 : 30" << "08 : 45" << "09 : 00" << "09 : 15" << "09 : 30" << "09 : 45" << "10 : 00" << "10 : 15" << "10 : 30";
+
+
 
     // Create a QTableWidget to display the schedule. It has 12 rows and 5 columns.
     QTableWidget* scheduleTable = new QTableWidget(12, 5, scheduleDialog);
@@ -133,4 +137,85 @@ void School_Scheduler::make_schedule() {
 
     // Display the dialog.
     scheduleDialog->show();
+}
+
+void School_Scheduler::add_element() {
+
+    // Create a new QDialog for adding an element.
+    QDialog* addElementDialog = new QDialog();
+
+    // Set fixed dimensions for the dialog window.
+    addElementDialog->setFixedWidth(200);
+    addElementDialog->setMinimumHeight(150);
+
+    // Create a QGridLayout to manage the layout of widgets within the dialog.
+    QGridLayout* layout = new QGridLayout(addElementDialog);
+
+    // Create a QComboBox to present the days of the week. 
+    QComboBox* dayComboBox = new QComboBox(addElementDialog);
+    dayComboBox->addItem("Monday");
+    dayComboBox->addItem("Tuesday");
+    dayComboBox->addItem("Wednesday");
+    dayComboBox->addItem("Thursday");
+    dayComboBox->addItem("Friday");
+
+    // Create a QComboBox to present the from hours.
+    QComboBox* fromComboBox = new QComboBox(addElementDialog);
+    fromComboBox->addItem("07 : 30");
+    fromComboBox->addItem("07 : 45");
+    fromComboBox->addItem("08 : 00");
+    fromComboBox->addItem("08 : 15");
+    fromComboBox->addItem("08 : 30");
+    fromComboBox->addItem("08 : 45");
+    fromComboBox->addItem("09 : 00");
+    fromComboBox->addItem("09 : 15");
+    fromComboBox->addItem("09 : 30");
+    fromComboBox->addItem("09 : 45");
+    fromComboBox->addItem("10 : 00");
+
+    // Create a QComboBox to present the to hours.
+    QComboBox* toComboBox = new QComboBox(addElementDialog);
+    toComboBox->addItem("08 : 00");
+    toComboBox->addItem("08 : 15");
+    toComboBox->addItem("08 : 30");
+    toComboBox->addItem("08 : 45");
+    toComboBox->addItem("09 : 00");
+    toComboBox->addItem("09 : 15");
+    toComboBox->addItem("09 : 30");
+    toComboBox->addItem("09 : 45");
+    toComboBox->addItem("10 : 00");
+    toComboBox->addItem("10 : 15");
+    toComboBox->addItem("10 : 30");
+
+    // Create a QLineEdit to get the title. 
+    QLineEdit* elementLineEdit = new QLineEdit(addElementDialog);
+    elementLineEdit->setToolTip("What is the class about?");
+
+    // Create a QComboBox to present the imported teachers.
+    QComboBox* teacherComboBox = new QComboBox(addElementDialog);
+    inputContainer.update();
+    for (int i = 0; i < inputContainer.get_size(); i++) {
+        qDebug() << inputContainer.get_at_index(i);
+        teacherComboBox->addItem(inputContainer.get_at_index(i));
+    }
+
+    // Create a QPushButton so that the user can submit the selected data.
+    QPushButton* submitButton = new QPushButton(addElementDialog);
+    submitButton->setText("Submit");
+
+    // Add widgets to the layout at the specified positions.
+    layout->addWidget(dayComboBox, 0, 0, 1, 2);
+    layout->addWidget(fromComboBox, 1, 0, 1, 1);
+    layout->addWidget(toComboBox, 1, 1, 1, 1);
+    layout->addWidget(elementLineEdit, 2, 0, 1, 2);
+    layout->addWidget(teacherComboBox, 3, 0, 1, 2);
+    layout->addWidget(submitButton, 4, 0, 1, 2);
+
+    // Set spacing between the widgets in the layout.
+    layout->setHorizontalSpacing(12);
+    layout->setVerticalSpacing(8);
+
+    
+    // Display new element window
+    addElementDialog->show();
 }
