@@ -14,9 +14,19 @@ class School_Scheduler : public QMainWindow
     private:
         Ui::School_SchedulerClass ui;
         QDialog* dialog;
-        private slots:
+
+    private slots:
         void import_data();
         void show_import();
         void make_schedule();
         void add_element();
+        void handle_submit_element();
+
+    private:
+        QComboBox* dayComboBox;
+        QComboBox* fromComboBox;
+        QComboBox* toComboBox;
+        QLineEdit* elementLineEdit;
+        QComboBox* teacherComboBox;
+        QDialog* addElementDialog;
 };
