@@ -1,6 +1,7 @@
 #include "School_Scheduler.h"
 #include "importFile.h"
 #include "inputContainer.h"
+#include "classElement.h"
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QFileDialog.h>
@@ -8,12 +9,16 @@
 #include <QListWidget>
 #include <QPushButton.h>
 #include <QGridLayout>
+#include <QFormLayout>
+#include <QComboBox>
 #include <QTableWidget>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 InputContainer inputContainer;
+vector<ClassElement *> classesArray;
 
 School_Scheduler::School_Scheduler(QWidget *parent) : QMainWindow(parent) {
     ui.setupUi(this);
@@ -127,6 +132,8 @@ void School_Scheduler::make_schedule() {
     layout->addWidget(saveButton, 0, 2);
     layout->addWidget(scheduleTable, 1, 0, 1, 3);
 
+    connect(addElementButton, SIGNAL(clicked()), this, SLOT(add_element()));
+
     // Set spacing between the widgets in the layout.
     layout->setHorizontalSpacing(12);
     layout->setVerticalSpacing(8);
@@ -138,11 +145,84 @@ void School_Scheduler::make_schedule() {
 void School_Scheduler::add_element() {
     // Create a new QDialog for adding an element
     QDialog* addElementDialog = new QDialog();
-    
+
     // Set fixed dimensions for the dialog window
-    addElementDialog->setMinimumWidth(640);
-    addElementDialog->setMinimumHeight(480);
-    
-    // Display new element window
-    addElementDialog->show();
+    addElementDialog->setFixedHeight(400);
+    addElementDialog->setFixedWidth(500);
+
+    // Create a QVBoxLayout to manage the overall layout of the dialog
+    QVBoxLayout* mainLayout = new QVBoxLayout(addElementDialog);
+
+    // Create and configure a QLabel for the title of the dialog.
+    QLabel* addElementLabel = new QLabel("Enter the data of a new class element:", addElementDialog);
+    addElementLabel->setStyleSheet("QLabel { font-size : 16px; }");
+    addElementLabel->setAlignment(Qt::AlignCenter);
+
+    // Add the QLabel to the main layout
+    mainLayout->addWidget(addElementLabel);
+
+    // Create a QFormLayout to manage the form fields
+    QFormLayout* formLayout = new QFormLayout();
+
+    // Create and configure QLineEdit and QComboBox widgets for inputting various data
+    QLineEdit* classNameInput = new QLineEdit(addElementDialog);
+    classNameInput->setPlaceholderText("Enter class name");
+
+    QLineEdit* classTimeInput = new QLineEdit(addElementDialog);
+    classTimeInput->setPlaceholderText("Enter class start time [int]");
+
+    QLineEdit* classDuration = new QLineEdit(addElementDialog);
+    classDuration->setPlaceholderText("Enter class duration [int]");
+
+    QLineEdit* classRoomInput = new QLineEdit(addElementDialog);
+    classRoomInput->setPlaceholderText("Enter class room");
+
+    QComboBox* instructorNameCombo = new QComboBox(addElementDialog);
+    inputContainer.update();
+    for (int i = 0; i < inputContainer.get_size(); i++) {
+        instructorNameCombo->addItem(inputContainer.get_at_index(i));
+    }
+
+    QComboBox* dayOfWeekComboBox = new QComboBox(addElementDialog);
+    dayOfWeekComboBox->addItems({ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" });
+
+    // Add the QLineEdit widgets and QComboBox to the form layout with corresponding labels
+    formLayout->addRow("Class Name:", classNameInput);
+    formLayout->addRow("Class Start Time:", classTimeInput);
+    formLayout->addRow("Class Time Duration:", classDuration);
+    formLayout->addRow("Class Room:", classRoomInput);
+    formLayout->addRow("Instructor Name:", instructorNameCombo);
+    formLayout->addRow("Day of the Week:", dayOfWeekComboBox);
+
+    // Add the form layout to the main layout
+    mainLayout->addLayout(formLayout);
+
+    // Create and configure a QPushButton to submit the input data.
+    QPushButton* submitButton = new QPushButton("Submit", addElementDialog);
+
+    // Add the QPushButton to the main layout
+    mainLayout->addWidget(submitButton);
+
+    // Connect the submit button's clicked signal to a slot that will handle the input data
+    connect(submitButton, &QPushButton::clicked, [addElementDialog, classNameInput, classTimeInput, classDuration, classRoomInput, instructorNameCombo, dayOfWeekComboBox, this]() {
+        QString className = classNameInput->text();
+        QString classTime = classTimeInput->text();
+        QString classDurationText = classDuration->text();
+        QString classRoom = classRoomInput->text();
+        QString instructorName = instructorNameCombo->currentText();
+        QString dayOfWeek = dayOfWeekComboBox->currentText();
+
+        // Process the data, add data to a classElement* vector
+        ClassElement* newClass = new ClassElement(className, classTime, classDurationText, classRoom, instructorName, dayOfWeek);
+        classesArray.push_back(newClass);
+
+        // Close the dialog after processing the input
+        addElementDialog->accept();
+        });
+
+    // Set the main layout for the dialog
+    addElementDialog->setLayout(mainLayout);
+
+    // Display the new element window
+    addElementDialog->exec();  // Use exec() to make the dialog modal
 }
