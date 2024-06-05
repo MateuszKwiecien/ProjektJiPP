@@ -139,8 +139,6 @@ void School_Scheduler::make_schedule() {
     layout->addWidget(saveButton, 0, 2);
     layout->addWidget(scheduleTable, 1, 0, 1, 3);
 
-    connect(addElementButton, SIGNAL(clicked()), this, SLOT(add_element()));
-
     // Set spacing between the widgets in the layout.
     layout->setHorizontalSpacing(12);
     layout->setVerticalSpacing(8);
