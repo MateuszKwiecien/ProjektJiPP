@@ -13,7 +13,9 @@ class School_Scheduler : public QMainWindow
 
     private:
         Ui::School_SchedulerClass ui;
-        private slots:
+        QDialog* dialog;
+
+    private slots:
         void import_data();
         void show_import();
         void make_schedule();

@@ -12,6 +12,7 @@
 #include <QFormLayout>
 #include <QComboBox>
 #include <QTableWidget>
+#include <QComboBox>
 #include <iostream>
 #include <vector>
 
@@ -93,6 +94,9 @@ void School_Scheduler::make_schedule() {
     // Create a new QDialog for the scheduling interface.
     QDialog* scheduleDialog = new QDialog();
 
+    // Set the dialog to be application modal, so it blocks input to other windows in the application.
+    scheduleDialog->setWindowModality(Qt::WindowModality::ApplicationModal);
+
     scheduleDialog->setMinimumWidth(640);
     scheduleDialog->setMinimumHeight(480);
 
@@ -107,6 +111,7 @@ void School_Scheduler::make_schedule() {
     
     // Create and configure a QPushButton to add elements to the schedule.
     QPushButton* addElementButton = new QPushButton("Add Element.", scheduleDialog);
+    connect(addElementButton, SIGNAL(clicked()), this, SLOT(add_element()));
     addElementButton->show();
     
     // Create and configure a QPushButton to save the schedule to a file.
@@ -117,7 +122,9 @@ void School_Scheduler::make_schedule() {
     horizontalHeaderLabels << "Monday" << "Tuesday" << "Wednesday" << "Thursday" << "Friday";
     
     QStringList verticalHeaderLabels;
-    verticalHeaderLabels << "07 : 00" << "08 : 00" << "09 : 00" << "10 : 00" << "11 : 00" << "12 : 00" << "13 : 00" << "14 : 00" << "15 : 00" << "16 : 00" << "17 : 00" << "18 : 00" << "19 : 00";
+    verticalHeaderLabels << "07 : 30" << "07 : 45" << "08 : 00" << "08 : 15" << "08 : 30" << "08 : 45" << "09 : 00" << "09 : 15" << "09 : 30" << "09 : 45" << "10 : 00" << "10 : 15" << "10 : 30";
+
+
 
     // Create a QTableWidget to display the schedule. It has 12 rows and 5 columns.
     QTableWidget* scheduleTable = new QTableWidget(12, 5, scheduleDialog);
