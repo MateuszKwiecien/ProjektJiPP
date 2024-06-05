@@ -4,7 +4,7 @@
 using namespace std;
 
 class ClassElement {
-private:
+public:
 	QString className;
 	int classStartTime;
 	int classTimeDuration;
@@ -12,6 +12,5 @@ private:
 	QString instructorName;
 	QString dayOfTheWeek;
 
-public:
 	ClassElement(const QString& classNameInput, const QString& classStartTimeInput, const QString& classTimeDurationInput, const QString& roomInput, const QString& instructorNameInput, const QString& dayOfTheWeekInput);
 };

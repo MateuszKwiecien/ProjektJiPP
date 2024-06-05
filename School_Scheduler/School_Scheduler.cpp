@@ -1,7 +1,7 @@
 #include "School_Scheduler.h"
 #include "importFile.h"
 #include "inputContainer.h"
-#include "classElement.h"
+#include "classElementContainer.h"
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QFileDialog.h>
@@ -14,12 +14,11 @@
 #include <QTableWidget>
 #include <QComboBox>
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
 InputContainer inputContainer;
-vector<ClassElement *> classesArray;
+ClassElementContainer classContainer;
 
 School_Scheduler::School_Scheduler(QWidget *parent) : QMainWindow(parent) {
     ui.setupUi(this);
@@ -122,9 +121,7 @@ void School_Scheduler::make_schedule() {
     horizontalHeaderLabels << "Monday" << "Tuesday" << "Wednesday" << "Thursday" << "Friday";
     
     QStringList verticalHeaderLabels;
-    verticalHeaderLabels << "07 : 30" << "07 : 45" << "08 : 00" << "08 : 15" << "08 : 30" << "08 : 45" << "09 : 00" << "09 : 15" << "09 : 30" << "09 : 45" << "10 : 00" << "10 : 15" << "10 : 30";
-
-
+    verticalHeaderLabels << "07 : 00" << "8 : 00" << "9 : 00" << "10 : 00" << "11 : 00" << "12 : 00" << "13 : 00" << "14 : 00" << "15 : 00" << "16 : 00" << "17 : 00" << "18 : 00" << "19 : 00";
 
     // Create a QTableWidget to display the schedule. It has 12 rows and 5 columns.
     QTableWidget* scheduleTable = new QTableWidget(12, 5, scheduleDialog);
@@ -219,7 +216,7 @@ void School_Scheduler::add_element() {
 
         // Process the data, add data to a classElement* vector
         ClassElement* newClass = new ClassElement(className, classTime, classDurationText, classRoom, instructorName, dayOfWeek);
-        classesArray.push_back(newClass);
+        classContainer.addElement(newClass);
 
         // Close the dialog after processing the input
         addElementDialog->accept();
