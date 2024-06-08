@@ -1,5 +1,6 @@
 #pragma once
 #include <QString>
+#include <QStringList>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ public:
 	int classTimeDuration;
 	QString room;
 	QString instructorName;
-	QString dayOfTheWeek;
+	int dayOfTheWeek;
 
 	ClassElement(const QString& classNameInput, const QString& classStartTimeInput, const QString& classTimeDurationInput, const QString& roomInput, const QString& instructorNameInput, const QString& dayOfTheWeekInput);
 };
