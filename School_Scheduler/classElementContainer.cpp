@@ -93,3 +93,31 @@ void ClassElementContainer::saveContainer(const QString& fileName){
 	}
 	file.close();
 }
+
+void ClassElementContainer::readContainer(const QString& fileName){
+	QFile file(fileName);
+
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		qDebug() << "Failed to open a file to read";
+		return;
+	}
+
+	classesArray.clear();
+	QTextStream in(&file);
+
+	while (!in.atEnd()) {
+		ClassElement* elem = new ClassElement;
+
+		elem->className = in.readLine();
+		elem->classStartTime = in.readLine().toInt();
+		elem->classTimeDuration = in.readLine().toInt();
+		elem->classType = in.readLine();
+		elem->dayOfTheWeek = in.readLine().toInt();
+		elem->instructorName = in.readLine();
+		elem->room = in.readLine();
+
+		classesArray.push_back(elem);
+	}
+
+	file.close();
+}

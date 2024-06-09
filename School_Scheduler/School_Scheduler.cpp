@@ -121,7 +121,6 @@ void School_Scheduler::make_schedule() {
 
     connect(saveButton, &QPushButton::clicked, [this]() {
         QString fileName = QFileDialog::getSaveFileName(this, tr("Choose the save file"), QDir::currentPath());
-        qDebug() << fileName;
         classContainer.saveContainer(fileName);
         });
 
@@ -163,9 +162,11 @@ void School_Scheduler::make_schedule() {
     layout->addWidget(deleteButton);
 
     QPushButton* readButton = new QPushButton("Read from file.", scheduleDialog);
-    connect(readButton, &QPushButton::clicked, []() {
-
+    connect(readButton, &QPushButton::clicked, [this]() {
+        QString fileName = QFileDialog::getOpenFileName(this, tr("Choose the save file to open"), QDir::currentPath());
+        classContainer.readContainer(fileName);
         });
+    layout->addWidget(readButton);
 
     // Add widgets to the layout at the specified positions.
     layout->addWidget(addElementButton, 0, 0);

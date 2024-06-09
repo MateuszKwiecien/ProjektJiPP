@@ -17,4 +17,5 @@ public:
 	void undo();
 	void deleteElement(const QString& delItemName, const QString& delItemType);
 	void saveContainer(const QString& fileName);
+	void readContainer(const QString& fileName);
 };
