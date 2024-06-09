@@ -119,6 +119,12 @@ void School_Scheduler::make_schedule() {
     layout->addWidget(saveButton);
     saveButton->show();
 
+    connect(saveButton, &QPushButton::clicked, [this]() {
+        QString fileName = QFileDialog::getSaveFileName(this, tr("Choose the save file"), QDir::currentPath());
+        qDebug() << fileName;
+        classContainer.saveContainer(fileName);
+        });
+
     QStringList horizontalHeaderLabels;
     horizontalHeaderLabels << "Monday" << "Tuesday" << "Wednesday" << "Thursday" << "Friday";
 
@@ -147,7 +153,7 @@ void School_Scheduler::make_schedule() {
     layout->addWidget(refreshButton);
 
     QPushButton* undoButton = new QPushButton("Undo", scheduleDialog);
-    connect(refreshButton, &QPushButton::clicked, []() {
+    connect(undoButton, &QPushButton::clicked, []() {
         classContainer.undo();
         });
     layout->addWidget(undoButton);
@@ -155,6 +161,11 @@ void School_Scheduler::make_schedule() {
     QPushButton* deleteButton = new QPushButton("Delete item", scheduleDialog);
     connect(deleteButton, SIGNAL(clicked()), this, SLOT(delete_item()));
     layout->addWidget(deleteButton);
+
+    QPushButton* readButton = new QPushButton("Read from file.", scheduleDialog);
+    connect(readButton, &QPushButton::clicked, []() {
+
+        });
 
     // Add widgets to the layout at the specified positions.
     layout->addWidget(addElementButton, 0, 0);
