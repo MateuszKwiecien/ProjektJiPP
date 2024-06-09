@@ -141,9 +141,16 @@ void School_Scheduler::make_schedule() {
     QPushButton* refreshButton = new QPushButton("Refresh", scheduleDialog);
     connect(refreshButton, &QPushButton::clicked, [scheduleTable]() {
         scheduleTable->clearContents();
+        scheduleTable->clearSpans();
         classContainer.refreshTable(scheduleTable);
         });
     layout->addWidget(refreshButton);
+
+    QPushButton* undoButton = new QPushButton("Undo", scheduleDialog);
+    connect(refreshButton, &QPushButton::clicked, []() {
+        classContainer.undo();
+        });
+    layout->addWidget(undoButton);
 
     // Add widgets to the layout at the specified positions.
     layout->addWidget(addElementButton, 0, 0);

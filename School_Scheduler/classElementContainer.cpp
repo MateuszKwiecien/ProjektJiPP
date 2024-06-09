@@ -42,7 +42,7 @@ void ClassElementContainer::refreshTable(QTableWidget* table) {
 		if (elem->classType == "LECTURE") {
 			item->setBackground(QColor(Qt::red));
 		}
-		else if (elem->classType == "CLASSIC") {
+		else if (elem->classType == "CLASSICAL") {
 			item->setBackground(QColor(Qt::yellow));
 		}
 		else {
@@ -50,5 +50,11 @@ void ClassElementContainer::refreshTable(QTableWidget* table) {
 		}
 		table->setSpan(elem->classStartTime, elem->dayOfTheWeek, 3 * elem->classTimeDuration, 1);
 		table->setItem(elem->classStartTime, elem->dayOfTheWeek, item);
+	}
+}
+
+void ClassElementContainer::undo() {
+	if (!classesArray.empty()) {
+		classesArray.pop_back();
 	}
 }
