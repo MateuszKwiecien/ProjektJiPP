@@ -55,6 +55,16 @@ void ClassElementContainer::refreshTable(QTableWidget* table) {
 
 void ClassElementContainer::undo() {
 	if (!classesArray.empty()) {
+		delete classesArray.back();
 		classesArray.pop_back();
+	}
+}
+
+void ClassElementContainer::deleteElement(const QString& delItemName, const QString& delItemType){
+	for (auto it = classesArray.begin(); it != classesArray.end(); ++it) {
+		if ((*it)->className == delItemName && (*it)->classType == delItemType) {
+			delete (*it);
+			classesArray.erase(it);
+		}
 	}
 }

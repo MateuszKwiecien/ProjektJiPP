@@ -152,6 +152,10 @@ void School_Scheduler::make_schedule() {
         });
     layout->addWidget(undoButton);
 
+    QPushButton* deleteButton = new QPushButton("Delete item", scheduleDialog);
+    connect(deleteButton, SIGNAL(clicked()), this, SLOT(delete_item()));
+    layout->addWidget(deleteButton);
+
     // Add widgets to the layout at the specified positions.
     layout->addWidget(addElementButton, 0, 0);
     layout->addWidget(titleLabel, 0, 1);
@@ -164,6 +168,51 @@ void School_Scheduler::make_schedule() {
 
     // Display the dialog.
     scheduleDialog->show();
+}
+
+void School_Scheduler::delete_item() {
+    QDialog* deleteItemDialog = new QDialog();
+
+    deleteItemDialog->setFixedHeight(400);
+    deleteItemDialog->setFixedWidth(500);
+
+    QVBoxLayout* mainLayout = new QVBoxLayout(deleteItemDialog);
+    QLabel* deleteItemLabel = new QLabel("Enter the data of an item to delete:", deleteItemDialog);
+    deleteItemLabel->setStyleSheet("QLabel { font-size : 16px; }");
+    deleteItemLabel->setAlignment(Qt::AlignCenter);
+
+    mainLayout->addWidget(deleteItemLabel);
+
+    QFormLayout* formLayout = new QFormLayout();
+
+    QComboBox* classTypeCombo = new QComboBox(deleteItemDialog);
+    classTypeCombo->setPlaceholderText("Class Type");
+    classTypeCombo->addItems({ "LECTURE", "LABORATORY", "CLASSICAL" });
+    
+    QLineEdit* classNameInput = new QLineEdit(deleteItemDialog);
+    classNameInput->setPlaceholderText("Enter class name");
+
+    formLayout->addRow("Class Type:", classTypeCombo);
+    formLayout->addRow("Class Name:", classNameInput);
+    
+    mainLayout->addLayout(formLayout);
+
+    QPushButton* deleteButton = new QPushButton("Delete", deleteItemDialog);
+
+    mainLayout->addWidget(deleteButton);
+
+    connect(deleteButton, &QPushButton::clicked, [deleteItemDialog, classNameInput, classTypeCombo, this]() {
+        QString className = classNameInput->text();
+        QString classType = classTypeCombo->currentText();
+
+        classContainer.deleteElement(className, classType);
+
+        deleteItemDialog->accept();
+        });
+
+    deleteItemDialog->setLayout(mainLayout);
+
+    deleteItemDialog->exec();
 }
 
 void School_Scheduler::add_element() {

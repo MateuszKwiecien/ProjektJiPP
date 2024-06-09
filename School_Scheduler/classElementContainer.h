@@ -15,4 +15,5 @@ public:
 	void debugPrint();
 	void refreshTable(QTableWidget* table);
 	void undo();
+	void deleteElement(const QString& delItemName, const QString& delItemType);
 };
