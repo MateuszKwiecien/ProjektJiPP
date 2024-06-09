@@ -2,8 +2,9 @@
 
 using namespace std;
 
-ClassElement::ClassElement(const QString& classNameInput, const QString& classStartTimeInput, const QString& classTimeDurationInput, const QString& roomInput, const QString& instructorNameInput, const QString& dayOfTheWeekInput) {
+ClassElement::ClassElement(const QString& classNameInput, const QString& classStartTimeInput, const QString& classTimeDurationInput, const QString& roomInput, const QString& instructorNameInput, const QString& dayOfTheWeekInput, const QString& classTypeInput) {
 	this->className = classNameInput;
+	this->classType = classTypeInput;
 	
 	// Parse class start time from string to integer index
 	QStringList startTimeParts = classStartTimeInput.split(":");

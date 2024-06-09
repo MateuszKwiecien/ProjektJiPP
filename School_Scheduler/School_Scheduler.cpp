@@ -214,8 +214,13 @@ void School_Scheduler::add_element() {
     for (int i = 0; i < inputContainer.get_size(); i++) {
         instructorNameCombo->addItem(inputContainer.get_at_index(i));
     }
+    
+    QComboBox* classTypeCombo = new QComboBox(addElementDialog);
+    classTypeCombo->setPlaceholderText("Class Type");
+    classTypeCombo->addItems({ "LECTURE", "LABORATORY", "CLASSICAL" });
 
     QComboBox* dayOfWeekComboBox = new QComboBox(addElementDialog);
+    dayOfWeekComboBox->setPlaceholderText("Day of the week");
     dayOfWeekComboBox->addItems({ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" });
 
     // Add the QLineEdit widgets and QComboBox to the form layout with corresponding labels
@@ -225,6 +230,7 @@ void School_Scheduler::add_element() {
     formLayout->addRow("Class Room:", classRoomInput);
     formLayout->addRow("Instructor Name:", instructorNameCombo);
     formLayout->addRow("Day of the Week:", dayOfWeekComboBox);
+    formLayout->addRow("Class Type:", classTypeCombo);
 
     // Add the form layout to the main layout
     mainLayout->addLayout(formLayout);
@@ -236,16 +242,17 @@ void School_Scheduler::add_element() {
     mainLayout->addWidget(submitButton);
 
     // Connect the submit button's clicked signal to a slot that will handle the input data
-    connect(submitButton, &QPushButton::clicked, [addElementDialog, classNameInput, classTimeInput, classDuration, classRoomInput, instructorNameCombo, dayOfWeekComboBox, this]() {
+    connect(submitButton, &QPushButton::clicked, [addElementDialog, classNameInput, classTimeInput, classDuration, classRoomInput, instructorNameCombo, dayOfWeekComboBox, classTypeCombo, this]() {
         QString className = classNameInput->text();
         QString classTime = classTimeInput->currentText();
         QString classDurationText = classDuration->currentText();
         QString classRoom = classRoomInput->text();
         QString instructorName = instructorNameCombo->currentText();
         QString dayOfWeek = dayOfWeekComboBox->currentText();
+        QString classType = classTypeCombo->currentText();
 
         // Process the data, add data to a classElement* vector
-        ClassElement* newClass = new ClassElement(className, classTime, classDurationText, classRoom, instructorName, dayOfWeek);
+        ClassElement* newClass = new ClassElement(className, classTime, classDurationText, classRoom, instructorName, dayOfWeek, classType);
         classContainer.addElement(newClass);
 
         // Close the dialog after processing the input
