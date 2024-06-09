@@ -1,7 +1,7 @@
 #include "School_Scheduler.h"
 #include "importFile.h"
 #include "inputContainer.h"
-#include "classElement.h"
+#include "classElementContainer.h"
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QFileDialog.h>
@@ -14,19 +14,18 @@
 #include <QTableWidget>
 #include <QComboBox>
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
 InputContainer inputContainer;
-vector<ClassElement *> classesArray;
+ClassElementContainer classContainer;
 
-School_Scheduler::School_Scheduler(QWidget *parent) : QMainWindow(parent) {
+School_Scheduler::School_Scheduler(QWidget* parent) : QMainWindow(parent) {
     ui.setupUi(this);
 }
 
 School_Scheduler::~School_Scheduler() {
-    
+
 }
 
 
@@ -49,7 +48,7 @@ void School_Scheduler::import_data() {
 void School_Scheduler::show_import() {
     // Create a new QDialog instance for displaying the imported data.
     QDialog* lookAtDataDialog = new QDialog();
-    
+
     // Set the dialog to be application modal, so it blocks input to other windows in the application.
     lookAtDataDialog->setWindowModality(Qt::WindowModality::ApplicationModal);
 
@@ -66,11 +65,11 @@ void School_Scheduler::show_import() {
     // 20px from the top
     // 400px width
     // 20px height
-    titleLabel->setGeometry(50, 25, 400, 20);              
+    titleLabel->setGeometry(50, 25, 400, 20);
     titleLabel->setStyleSheet("QLabel { font-size : 16px; }");
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setParent(lookAtDataDialog);
-    titleLabel->show();                         
+    titleLabel->show();
 
     // Create a new QListWidget instance for displaying the data.
     QListWidget* dataListWidget = new QListWidget();
@@ -108,38 +107,49 @@ void School_Scheduler::make_schedule() {
     titleLabel->setStyleSheet("QLabel { font-size : 16px; }");
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->show();
-    
+
     // Create and configure a QPushButton to add elements to the schedule.
     QPushButton* addElementButton = new QPushButton("Add Element.", scheduleDialog);
     connect(addElementButton, SIGNAL(clicked()), this, SLOT(add_element()));
+    layout->addWidget(addElementButton);
     addElementButton->show();
-    
+
     // Create and configure a QPushButton to save the schedule to a file.
     QPushButton* saveButton = new QPushButton("Save to file.", scheduleDialog);
+    layout->addWidget(saveButton);
     saveButton->show();
-    
+
     QStringList horizontalHeaderLabels;
     horizontalHeaderLabels << "Monday" << "Tuesday" << "Wednesday" << "Thursday" << "Friday";
-    
+
     QStringList verticalHeaderLabels;
-    verticalHeaderLabels << "07 : 30" << "07 : 45" << "08 : 00" << "08 : 15" << "08 : 30" << "08 : 45" << "09 : 00" << "09 : 15" << "09 : 30" << "09 : 45" << "10 : 00" << "10 : 15" << "10 : 30";
+    // Adjusted vertical labels from 7:00 to 19:00 with 15-minute increments.
+    for (int hour = 7; hour <= 19; ++hour) {
+        for (int minute = 0; minute < 60; minute += 15) {
+            QString timeLabel = QString("%1 : %2").arg(hour, 2, 10, QChar('0')).arg(minute, 2, 10, QChar('0'));
+            verticalHeaderLabels << timeLabel;
+        }
+    }
 
-
-
-    // Create a QTableWidget to display the schedule. It has 12 rows and 5 columns.
-    QTableWidget* scheduleTable = new QTableWidget(12, 5, scheduleDialog);
+    // Create a QTableWidget to display the schedule. It's size is verticalHeaderLabels x horizontalHeaderLabels
+    QTableWidget* scheduleTable = new QTableWidget(verticalHeaderLabels.size(), horizontalHeaderLabels.size(), scheduleDialog);
     scheduleTable->setHorizontalHeaderLabels(horizontalHeaderLabels);
     scheduleTable->setVerticalHeaderLabels(verticalHeaderLabels);
-    
+
     scheduleTable->show();
+
+    QPushButton* refreshButton = new QPushButton("Refresh", scheduleDialog);
+    connect(refreshButton, &QPushButton::clicked, [scheduleTable]() {
+        scheduleTable->clearContents();
+        classContainer.refreshTable(scheduleTable);
+        });
+    layout->addWidget(refreshButton);
 
     // Add widgets to the layout at the specified positions.
     layout->addWidget(addElementButton, 0, 0);
     layout->addWidget(titleLabel, 0, 1);
     layout->addWidget(saveButton, 0, 2);
     layout->addWidget(scheduleTable, 1, 0, 1, 3);
-
-    connect(addElementButton, SIGNAL(clicked()), this, SLOT(add_element()));
 
     // Set spacing between the widgets in the layout.
     layout->setHorizontalSpacing(12);
@@ -175,11 +185,25 @@ void School_Scheduler::add_element() {
     QLineEdit* classNameInput = new QLineEdit(addElementDialog);
     classNameInput->setPlaceholderText("Enter class name");
 
-    QLineEdit* classTimeInput = new QLineEdit(addElementDialog);
-    classTimeInput->setPlaceholderText("Enter class start time [int]");
+    QComboBox* classTimeInput = new QComboBox(addElementDialog);
+    classTimeInput->setPlaceholderText("Enter class start time");
 
-    QLineEdit* classDuration = new QLineEdit(addElementDialog);
-    classDuration->setPlaceholderText("Enter class duration [int]");
+    // Populate the classTimeInput ComboBox with time values from 7:30 to 19:00 at 15-minute intervals
+    for (int hour = 7; hour <= 19; ++hour) {
+        for (int minute = 0; minute < 60; minute += 15) {
+            if (!(hour == 19 && minute > 0)) {
+                QString timeLabel = QString("%1:%2").arg(hour, 2, 10, QChar('0')).arg(minute, 2, 10, QChar('0'));
+                classTimeInput->addItem(timeLabel);
+            }
+        }
+    }
+
+    QComboBox* classDuration = new QComboBox(addElementDialog);
+    classDuration->setPlaceholderText("Enter class duration (in school hours)");
+
+    QStringList classDurationItems;
+    classDurationItems << "1" << "2" << "3" << "4";
+    classDuration->addItems(classDurationItems);
 
     QLineEdit* classRoomInput = new QLineEdit(addElementDialog);
     classRoomInput->setPlaceholderText("Enter class room");
@@ -189,8 +213,13 @@ void School_Scheduler::add_element() {
     for (int i = 0; i < inputContainer.get_size(); i++) {
         instructorNameCombo->addItem(inputContainer.get_at_index(i));
     }
+    
+    QComboBox* classTypeCombo = new QComboBox(addElementDialog);
+    classTypeCombo->setPlaceholderText("Class Type");
+    classTypeCombo->addItems({ "LECTURE", "LABORATORY", "CLASSICAL" });
 
     QComboBox* dayOfWeekComboBox = new QComboBox(addElementDialog);
+    dayOfWeekComboBox->setPlaceholderText("Day of the week");
     dayOfWeekComboBox->addItems({ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" });
 
     // Add the QLineEdit widgets and QComboBox to the form layout with corresponding labels
@@ -200,6 +229,7 @@ void School_Scheduler::add_element() {
     formLayout->addRow("Class Room:", classRoomInput);
     formLayout->addRow("Instructor Name:", instructorNameCombo);
     formLayout->addRow("Day of the Week:", dayOfWeekComboBox);
+    formLayout->addRow("Class Type:", classTypeCombo);
 
     // Add the form layout to the main layout
     mainLayout->addLayout(formLayout);
@@ -211,17 +241,18 @@ void School_Scheduler::add_element() {
     mainLayout->addWidget(submitButton);
 
     // Connect the submit button's clicked signal to a slot that will handle the input data
-    connect(submitButton, &QPushButton::clicked, [addElementDialog, classNameInput, classTimeInput, classDuration, classRoomInput, instructorNameCombo, dayOfWeekComboBox, this]() {
+    connect(submitButton, &QPushButton::clicked, [addElementDialog, classNameInput, classTimeInput, classDuration, classRoomInput, instructorNameCombo, dayOfWeekComboBox, classTypeCombo, this]() {
         QString className = classNameInput->text();
-        QString classTime = classTimeInput->text();
-        QString classDurationText = classDuration->text();
+        QString classTime = classTimeInput->currentText();
+        QString classDurationText = classDuration->currentText();
         QString classRoom = classRoomInput->text();
         QString instructorName = instructorNameCombo->currentText();
         QString dayOfWeek = dayOfWeekComboBox->currentText();
+        QString classType = classTypeCombo->currentText();
 
         // Process the data, add data to a classElement* vector
-        ClassElement* newClass = new ClassElement(className, classTime, classDurationText, classRoom, instructorName, dayOfWeek);
-        classesArray.push_back(newClass);
+        ClassElement* newClass = new ClassElement(className, classTime, classDurationText, classRoom, instructorName, dayOfWeek, classType);
+        classContainer.addElement(newClass);
 
         // Close the dialog after processing the input
         addElementDialog->accept();

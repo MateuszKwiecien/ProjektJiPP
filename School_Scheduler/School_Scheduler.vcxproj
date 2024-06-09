@@ -96,6 +96,7 @@
     <QtUic Include="School_Scheduler.ui" />
     <QtMoc Include="School_Scheduler.h" />
     <ClCompile Include="classElement.cpp" />
+    <ClCompile Include="classElementContainer.cpp" />
     <ClCompile Include="importFile.cpp" />
     <ClCompile Include="inputContainer.cpp" />
     <ClCompile Include="inputdialog.cpp" />
@@ -107,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classElement.h" />
+    <ClInclude Include="classElementContainer.h" />
     <ClInclude Include="importFile.h" />
     <ClInclude Include="inputContainer.h" />
   </ItemGroup>

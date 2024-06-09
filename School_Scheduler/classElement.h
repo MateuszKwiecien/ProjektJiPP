@@ -1,17 +1,18 @@
 #pragma once
 #include <QString>
+#include <QStringList>
 
 using namespace std;
 
 class ClassElement {
-private:
+public:
 	QString className;
 	int classStartTime;
 	int classTimeDuration;
 	QString room;
 	QString instructorName;
-	QString dayOfTheWeek;
+	int dayOfTheWeek;
+	QString classType;
 
-public:
-	ClassElement(const QString& classNameInput, const QString& classStartTimeInput, const QString& classTimeDurationInput, const QString& roomInput, const QString& instructorNameInput, const QString& dayOfTheWeekInput);
+	ClassElement(const QString& classNameInput, const QString& classStartTimeInput, const QString& classTimeDurationInput, const QString& roomInput, const QString& instructorNameInput, const QString& dayOfTheWeekInput, const QString& classTypeInput);
 };
