@@ -141,7 +141,6 @@ void School_Scheduler::make_schedule() {
     QPushButton* refreshButton = new QPushButton("Refresh", scheduleDialog);
     connect(refreshButton, &QPushButton::clicked, [scheduleTable]() {
         scheduleTable->clearContents();
-        classContainer.debugPrint();
         classContainer.refreshTable(scheduleTable);
         });
     layout->addWidget(refreshButton);
