@@ -5,7 +5,7 @@ using namespace std;
 ClassElement::ClassElement(const QString& classNameInput, const QString& classStartTimeInput, const QString& classTimeDurationInput, const QString& roomInput, const QString& instructorNameInput, const QString& dayOfTheWeekInput, const QString& classTypeInput) {
 	this->className = classNameInput;
 	this->classType = classTypeInput;
-	
+
 	// Parse class start time from string to integer index
 	QStringList startTimeParts = classStartTimeInput.split(":");
 	int hour = startTimeParts[0].toInt();
@@ -15,7 +15,7 @@ ClassElement::ClassElement(const QString& classNameInput, const QString& classSt
 	this->classTimeDuration = classTimeDurationInput.toInt();
 	this->room = roomInput;
 	this->instructorName = instructorNameInput;
-	
+
 	if (dayOfTheWeekInput == "Monday") {
 		this->dayOfTheWeek = 0;
 	}

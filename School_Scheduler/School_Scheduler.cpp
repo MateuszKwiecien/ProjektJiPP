@@ -213,7 +213,7 @@ void School_Scheduler::add_element() {
     for (int i = 0; i < inputContainer.get_size(); i++) {
         instructorNameCombo->addItem(inputContainer.get_at_index(i));
     }
-    
+
     QComboBox* classTypeCombo = new QComboBox(addElementDialog);
     classTypeCombo->setPlaceholderText("Class Type");
     classTypeCombo->addItems({ "LECTURE", "LABORATORY", "CLASSICAL" });

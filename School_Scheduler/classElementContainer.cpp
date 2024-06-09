@@ -37,7 +37,7 @@ void ClassElementContainer::debugPrint() {
 
 void ClassElementContainer::refreshTable(QTableWidget* table) {
 	for (const auto& elem : classesArray) {
-		QTableWidgetItem* item = new QTableWidgetItem(elem->classType + "\n" + elem->className + " - " + elem->room +"\n" + elem->instructorName);
+		QTableWidgetItem* item = new QTableWidgetItem(elem->classType + "\n" + elem->className + " - " + elem->room + "\n" + elem->instructorName);
 		item->setTextAlignment(Qt::AlignCenter);
 		if (elem->classType == "LECTURE") {
 			item->setBackground(QColor(Qt::red));
